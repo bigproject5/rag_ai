@@ -2,6 +2,23 @@ server:
   port: 8085
 
 spring:
+  # Database Configuration
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ragdb}
+    username: ${DB_USER:user}
+    password: ${DB_PASS:pass}
+    driver-class-name: org.postgresql.Driver
+
+  # JPA/Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate # On startup, validate the schema, don't create or drop tables.
+    show-sql: true # Log SQL statements for debugging
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Kafka Configuration
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
     consumer:
@@ -22,3 +39,10 @@ rag:
     ingest: ${TOPIC_INGEST:rag.ingest}
     query:  ${TOPIC_QUERY:rag.query}
     result: ${TOPIC_RESULT:rag.result}
+
+# OpenAI Configuration
+openai:
+  base-url: https://api.openai.com/v1
+  api-key: ${OPENAI_API_KEY}
+  chat-model: gpt-4o-mini
+  embed-model: text-embedding-3-large
